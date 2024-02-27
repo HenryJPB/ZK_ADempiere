@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <vbox align="center" width="100%" > 
+        <label id="lb1" style="font-weight:bold" value="© 2023 Copyright: mundoInformatico.com" /> 
+        <div>
+            <toolbar>
+                <image id="" src="/IMG/Twitter.png" width="21px" height="21px"/>
+                <toolbarbutton label="Twitter" image="" />
+                
+                <image id="" src="/IMG/Telegram.png" width="21px" height="21px"/>
+                <toolbarbutton label="Telegram" image="" />
+                
+                <image id="" src="/IMG/Instagram.png" width="21px" height="21px"/>
+                <toolbarbutton label="Instagram"/>
+                
+                <image id="" src="/IMG/Facebook.png" width="21px" height="21px"/>
+                <toolbarbutton label="FaceBook"/>
+                
+                <image id="" src="/IMG/Github.png" width="21px" height="21px"/>
+                <toolbarbutton label="GitHub" />
+            </toolbar>
+        </div>
+    </vbox>  
+</zk>

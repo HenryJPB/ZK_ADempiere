@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+index.zul
+
+{{IS_NOTE
+	Purpose:
+		
+	Description:
+		
+	History:
+		Mon Jun 12 21:23:35     2006, Created by tomyeh
+		Fri May 01 04:36:35     2009, Modified by stera
+}}IS_NOTE
+
+Copyright (C) 2006 Potix Corporation. All Rights Reserved.
+
+{{IS_RIGHT
+}}IS_RIGHT
+-->
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="/css/EstiloHP.css"/>
+    <div align="center" >
+        <space/>
+        <space/>
+		 <space/>
+        <window width="40%" >
+            <style src="css/estiloHP.css"/>
+            <label id="" value="ZK 7.0.1 CE Java Web application EE6" style="font-weigth:bold;font-size:13px;" />
+            <include src="./VISTA_ACCESORIOS/portada.zul" />
+            <div align="center" width="" height="" style="" >  
+                <vlayout>
+                    <include id="incPagAcceso" src="./VISTA_PRINCIPAL/pagAcceso.zul"/>
+                </vlayout>
+            </div>	
+        </window>
+        <!--  
+        <image src="IMG/ERPnext-logo.jpg"/> 
+        -->
+    </div>
+    <!-- An example to check:  
+    <window>
+    <zscript><![CDATA[
+    contacts = new String[] {"Monday", "Tuesday", "Wednesday"};
+    ]]>
+    </zscript>
+    <listbox>
+        <listitem label="${each}" forEach="${contacts}"/>
+    </listbox>
+    </window>
+    -->
+</zk>
