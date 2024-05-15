@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NotaEntrega(v2)" pageWidth="612" pageHeight="600" whenNoDataType="BlankPage" columnWidth="532" leftMargin="40" rightMargin="40" topMargin="100" bottomMargin="40" uuid="c38dfde8-a568-4bde-bf90-d14a51e11ca1">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<parameter name="p_client_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1000000]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p_org_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1000000]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p_nro_entrega" class="java.lang.String">
+		<defaultValueExpression><![CDATA["EVNF-1"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select m_inout.documentno as nro_despacho,
+	   m_inout.description as descripcion,
+	   m_inout.dateordered as fecha_orden,
+	   m_inout.dateprinted as fecha_entrega,
+             c_order.documentno as nro_orden_venta,
+	   c_bpartner.value as rif,
+	   c_bpartner.name as nombre,
+	   c_location.address1 as direccion1,
+	   c_location.address2 as direccion2,
+	   c_location.address3 as direccion3,
+	   c_location.city as ciudad,
+	   c_location.regionname as estado,
+	   c_location.c_country_id as id_pais,
+             (
+               select c_location.address1
+	     from   c_location, c_order, c_bpartner, c_bpartner_location
+	     where  c_location.ad_client_id = m_inout.ad_client_id
+               and    c_order.ad_client_id = c_location.ad_client_id
+	     and    c_order.c_order_id  = m_inout.c_order_id
+                  and    c_bpartner_location.c_bpartner_id = c_bpartner.c_bpartner_id
+	and    c_order.bill_location_id  = c_bpartner_location.c_bpartner_location_id
+	    and    c_location.c_location_id = c_bpartner_location.c_location_id
+	   ) as dir_fiscal1,
+              (
+               select c_location.address2
+	     from   c_location, c_order, c_bpartner, c_bpartner_location
+	     where  c_location.ad_client_id = m_inout.ad_client_id
+               and    c_order.ad_client_id = c_location.ad_client_id
+	     and    c_order.c_order_id  = m_inout.c_order_id
+                  and    c_bpartner_location.c_bpartner_id = c_bpartner.c_bpartner_id
+	and    c_order.bill_location_id  = c_bpartner_location.c_bpartner_location_id
+	    and    c_location.c_location_id = c_bpartner_location.c_location_id
+	   ) as dir_fiscal2,
+	   (
+               select c_location.address3
+	     from   c_location, c_order, c_bpartner, c_bpartner_location
+	     where  c_location.ad_client_id = m_inout.ad_client_id
+               and    c_order.ad_client_id = c_location.ad_client_id
+	     and    c_order.c_order_id  = m_inout.c_order_id
+                  and    c_bpartner_location.c_bpartner_id = c_bpartner.c_bpartner_id
+	and    c_order.bill_location_id  = c_bpartner_location.c_bpartner_location_id
+	    and    c_location.c_location_id = c_bpartner_location.c_location_id
+	   ) as dir_fiscal3,
+	   (
+        select c_location.city
+		from   c_location, c_order, c_bpartner, c_bpartner_location
+		--where  c_location.ad_org_id = 1000000
+		where  c_location.ad_client_id = m_inout.ad_client_id
+		and    c_order.ad_client_id = c_location.ad_client_id
+		and    c_order.c_order_id  = m_inout.c_order_id
+		and    c_bpartner_location.c_bpartner_id = c_bpartner.c_bpartner_id
+		and    c_order.bill_location_id  = c_bpartner_location.c_bpartner_location_id
+		and    c_location.c_location_id = c_bpartner_location.c_location_id
+	   ) as ciudad_fiscal,
+             (
+        select c_location.regionname
+		from   c_location, c_order, c_bpartner, c_bpartner_location
+		--where  c_location.ad_org_id = 1000000
+		where  c_location.ad_client_id = m_inout.ad_client_id
+		and    c_order.ad_client_id = c_location.ad_client_id
+		and    c_order.c_order_id  = m_inout.c_order_id
+		and    c_bpartner_location.c_bpartner_id = c_bpartner.c_bpartner_id
+		and    c_order.bill_location_id  = c_bpartner_location.c_bpartner_location_id
+		and    c_location.c_location_id = c_bpartner_location.c_location_id
+	   ) as estado_fiscal,
+	   m_inout.salesrep_id as id_usuario,
+	   --ad_user.name as nombre_usuario,
+	   m_inoutline.m_product_id as id_producto,
+	   m_product.value as cod_producto,
+	   m_product.name as name_producto,
+	   m_inoutline.qtyentered as cantidad,
+	   m_product.weight as peso,
+	   ( m_product.weight * m_inoutline.qtyentered ) as peso_bruto,
+              m_shipper."name" as transportista,
+	   m_shipper.description as transporte
+from   m_inout, c_order, c_bpartner, c_bpartner_location, c_location, m_inoutline, m_product, m_shipper
+where  m_inout.ad_client_id = $P{p_client_id}
+and    m_inout.ad_org_id  = $P{p_org_id}
+and    c_order.ad_org_id = m_inout.ad_org_id
+and    c_order.ad_client_id  = m_inout.ad_client_id
+and    c_order.c_order_id  = m_inout.c_order_id
+and    c_bpartner.ad_client_id  = m_inout.ad_client_id
+and    c_bpartner.c_bpartner_id = m_inout.c_bpartner_id
+and    m_inout.documentno = $P{p_nro_entrega}
+and    c_bpartner_location.c_bpartner_id = c_bpartner.c_bpartner_id
+and    c_bpartner_location.ad_client_id = m_inout.ad_client_id
+and    c_location.ad_client_id = m_inout.ad_client_id
+and    c_location.c_location_id = c_bpartner_location.c_location_id
+and    c_location.address2 is not null  -- Sujeto a revision!!!
+and    c_bpartner_location.c_bpartner_id = c_bpartner.c_bpartner_id
+and    m_inoutline.ad_client_id = m_inout.ad_client_id
+and    m_inoutline.m_inout_id = m_inout.m_inout_id
+and    m_product.ad_client_id  = m_inout.ad_client_id
+and    m_product.m_product_id = m_inoutline.m_product_id
+and    m_shipper.ad_org_id = m_inout.ad_org_id
+and    m_shipper.ad_client_id = m_inout.ad_client_id
+and    m_shipper.m_shipper_id = m_inout.m_shipper_id]]>
+	</queryString>
+	<field name="nro_despacho" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="fecha_orden" class="java.sql.Timestamp"/>
+	<field name="fecha_entrega" class="java.sql.Timestamp"/>
+	<field name="nro_orden_venta" class="java.lang.String"/>
+	<field name="rif" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="direccion1" class="java.lang.String"/>
+	<field name="direccion2" class="java.lang.String"/>
+	<field name="direccion3" class="java.lang.String"/>
+	<field name="ciudad" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="id_pais" class="java.math.BigDecimal"/>
+	<field name="dir_fiscal1" class="java.lang.String"/>
+	<field name="dir_fiscal2" class="java.lang.String"/>
+	<field name="dir_fiscal3" class="java.lang.String"/>
+	<field name="ciudad_fiscal" class="java.lang.String"/>
+	<field name="estado_fiscal" class="java.lang.String"/>
+	<field name="id_usuario" class="java.math.BigDecimal"/>
+	<field name="id_producto" class="java.math.BigDecimal"/>
+	<field name="cod_producto" class="java.lang.String"/>
+	<field name="name_producto" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="peso" class="java.math.BigDecimal"/>
+	<field name="peso_bruto" class="java.math.BigDecimal"/>
+	<field name="transportista" class="java.lang.String"/>
+	<field name="transporte" class="java.lang.String"/>
+	<variable name="sum_peso" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{peso_bruto}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.00]]></initialValueExpression>
+	</variable>
+	<pageHeader>
+		<band height="174" splitType="Stretch">
+			<staticText>
+				<reportElement x="11" y="4" width="38" height="20" uuid="56362bab-370e-4695-98fb-cc0329afc6d5"/>
+				<textElement>
+					<font fontName="Serif" size="12" isBold="true" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[Nro.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="327" y="24" width="100" height="20" uuid="092fd23c-2834-47dc-b60f-d55f1196cd7f"/>
+				<textElement>
+					<font fontName="Serif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rif}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="44" width="240" height="20" uuid="b9bea426-0b86-47d2-b8e4-0fe2373f71bd"/>
+				<textElement>
+					<font fontName="Serif" size="10" isBold="false" isUnderline="true" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[DIRECCION FISCAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="44" width="236" height="20" uuid="7b2b05ad-1aa7-406a-b33e-545e17b0c059"/>
+				<textElement>
+					<font fontName="Serif" isBold="false" isUnderline="true" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[DIRECCION ENTREGA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="53" y="4" width="80" height="20" uuid="65e2eccf-f1fd-4b07-a219-9b97b20bb316"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nro_despacho}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="264" y="4" width="50" height="20" uuid="d9f2a7ff-e338-406a-b496-840026f3f51f"/>
+				<textElement textAlignment="Left">
+					<font fontName="Serif" isBold="true" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="327" y="4" width="100" height="20" uuid="d100e560-0640-496b-8bf7-9f9d00681ca1"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_orden}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="11" y="24" width="253" height="20" uuid="69991fb6-219e-43d5-9c5a-1573fff41589"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="264" y="24" width="50" height="20" uuid="fd45a4ff-cce3-4153-bb8a-2bdf24e56744"/>
+				<textElement textAlignment="Left">
+					<font fontName="Serif" isBold="true" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[Rif:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="264" y="64" width="236" height="20" uuid="83a1ed63-cf27-4a73-836b-6a6c5bb5673b"/>
+				<textFieldExpression><![CDATA[$F{direccion1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="11" y="64" width="240" height="20" uuid="59ae1766-4733-4637-9d19-3de8bab40d62"/>
+				<textFieldExpression><![CDATA[$F{dir_fiscal1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="264" y="81" width="236" height="20" uuid="8f7874b3-9cc6-4beb-b9bc-44ed5f614f23"/>
+				<textFieldExpression><![CDATA[$F{direccion2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="11" y="81" width="240" height="20" uuid="d38d2f44-de30-446f-bc64-4f50abb83f3f"/>
+				<textFieldExpression><![CDATA[$F{dir_fiscal2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="85" y="100" width="48" height="20" uuid="aff35ab8-8a3e-4412-b6df-2e5030c8ae93"/>
+				<textElement>
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[estado:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="100" width="46" height="20" uuid="36888053-6328-4749-a177-d3800225ee3a"/>
+				<textElement>
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[estado:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="265" y="100" width="77" height="20" uuid="9788285a-2b0b-4683-a870-2abc3a9ab093"/>
+				<textFieldExpression><![CDATA[$F{ciudad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="393" y="100" width="97" height="20" uuid="c4131678-7ad0-4f0a-a725-efe67e655a20"/>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="11" y="100" width="71" height="20" uuid="20cf1b32-85a6-4cad-98f8-55d61782b4c5"/>
+				<textFieldExpression><![CDATA[$F{ciudad_fiscal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="100" width="116" height="20" uuid="cf4da55d-9a24-4f16-ba25-6d4cb25a9b23"/>
+				<textFieldExpression><![CDATA[$F{estado_fiscal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="80" y="105" width="4" height="20" uuid="953da3f3-a361-4486-bf0a-677358d42cb0"/>
+				<text><![CDATA[,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="342" y="105" width="4" height="20" uuid="c5e01e87-b8d5-42d5-9a01-7f9f6bd319e8"/>
+				<text><![CDATA[,]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="121" width="529" height="2" uuid="c7a43713-a329-4907-a6d8-3bab0b3086fe"/>
+			</line>
+			<line>
+				<reportElement x="3" y="168" width="529" height="2" uuid="0fddebb5-0647-48bf-bf2e-8b974e53b0b3"/>
+			</line>
+			<staticText>
+				<reportElement x="3" y="127" width="77" height="20" uuid="3f66f9cf-997c-4734-8219-24e82ec30615"/>
+				<textElement>
+					<font fontName="Serif" isBold="true" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[Transporte: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="127" width="93" height="20" uuid="14cf8c73-02da-4b53-ae70-8cec6a4f177d"/>
+				<textElement>
+					<font fontName="Serif" isBold="true" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[Transportista:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="357" y="127" width="133" height="20" uuid="e798d55a-a440-4f14-9e51-475c362e5ca7"/>
+				<textFieldExpression><![CDATA[$F{transportista}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="127" width="171" height="20" uuid="c084ca93-d5d7-423d-8eb5-72552b587b06"/>
+				<textFieldExpression><![CDATA[$F{transporte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="147" width="65" height="20" uuid="6f9dc07e-a388-407e-b4de-647e2521dfd5"/>
+				<textElement>
+					<font fontName="Serif" isBold="true" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[O.V. Nro:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="85" y="147" width="63" height="20" uuid="91a900ba-2aa0-4986-a24d-6b7ed71a9f04"/>
+				<textFieldExpression><![CDATA[$F{nro_orden_venta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="3" y="3" width="87" height="13" uuid="6bbca0ac-d76c-4eb6-b7b9-8f39430c6c64"/>
+				<textElement>
+					<font fontName="Serif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Id_producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="3" width="257" height="13" uuid="2deac010-b5cd-4471-b46f-f2e94fd78def"/>
+				<textElement>
+					<font fontName="Serif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="15" width="529" height="2" uuid="708d67f3-d23d-460f-a678-ab703efe01ca"/>
+			</line>
+			<staticText>
+				<reportElement x="351" y="2" width="51" height="13" uuid="743c0d1f-4fa3-4ca7-9558-359f229c68a7"/>
+				<textElement textAlignment="Right">
+					<font fontName="Serif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peso Uni]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="457" y="2" width="75" height="13" uuid="c9ec38d4-df2d-4d0b-9c90-86515fa1a537"/>
+				<textElement textAlignment="Right">
+					<font fontName="Serif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Peso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="406" y="2" width="51" height="13" uuid="0746a22a-32cf-4542-9a3d-ab849fb55f1a"/>
+				<textElement textAlignment="Right">
+					<font fontName="Serif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField>
+				<reportElement x="95" y="0" width="257" height="15" uuid="f25f2cbf-4d60-4aac-af40-7985224dfbf6"/>
+				<textFieldExpression><![CDATA[$F{name_producto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="352" y="1" width="51" height="15" uuid="c58e6812-5483-4c6a-b49b-5165613683e6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{peso}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="457" y="2" width="75" height="15" uuid="8182be5d-29d8-44e7-814a-9fe63c80aa4a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{peso_bruto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="0" width="87" height="15" uuid="c3802ef2-a845-4fb4-a72f-b9c564aaba94"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cod_producto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="407" y="3" width="51" height="15" uuid="20963a25-309e-42ed-b38b-922f396a4901"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="23" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="133" splitType="Stretch">
+			<staticText>
+				<reportElement x="116" y="54" width="366" height="52" uuid="2055b621-b955-4db6-a9a0-8086fd91a580"/>
+				<textElement>
+					<font fontName="Monospaced" size="9"/>
+				</textElement>
+				<text><![CDATA[Guia habilitada para el traslado de mercancia. La descarga de la mercancia es por cuenta y riesgo del COMPRADOR.
+En la Factura se establecen de garantia para los productos. Cualquier reclamo debe ser notificado de inmediato a DESICA.]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement mode="Transparent" x="103" y="44" width="387" height="73" uuid="98cb7940-349a-4ee8-8f49-36a1e04447fb"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="33" y="22" width="125" height="12" uuid="767c97d2-ca05-43fd-9910-43927ec6c1ca"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aceptacion Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="223" y="22" width="124" height="12" uuid="d3bebd3c-2584-4c43-b255-a24363911d74"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Transportista]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="407" y="22" width="125" height="12" uuid="bd08e2fa-4205-4ecf-a783-25b6d0ae9459"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Despachador]]></text>
+			</staticText>
+			<line>
+				<reportElement x="407" y="21" width="125" height="1" uuid="d4b39f02-3e0a-4fa9-b5da-4a333b3a8e80"/>
+			</line>
+			<line>
+				<reportElement x="223" y="20" width="125" height="1" uuid="30d856b9-6735-4070-bfe4-47df63d9c6ac"/>
+			</line>
+			<line>
+				<reportElement x="33" y="19" width="125" height="1" uuid="3d1cc2f4-d800-4a64-a9a2-bbec81e013b4"/>
+			</line>
+			<staticText>
+				<reportElement x="249" y="119" width="125" height="12" uuid="ad183cad-8df9-4210-8263-4b0053ef55a8"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sin derecho a Credito fiscal]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="34" splitType="Stretch">
+			<textField pattern="#,##0.00;#,##0.00-">
+				<reportElement x="443" y="10" width="89" height="20" uuid="2b494b27-3a1d-455d-bc23-446c0e3ba393"/>
+				<textElement textAlignment="Right">
+					<font size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_peso}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="421" y="4" width="111" height="1" uuid="4f5262b0-1d61-4d73-a4f8-ef870bc9fcc0"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

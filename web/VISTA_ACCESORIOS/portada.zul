@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+    <hbox width="100%" height="80%" style="background: blue;border-style: groove; border-width: 2px" align="center" pack="center" >
+        <vbox align="center" >
+            <space/>
+            <space/>
+            <zscript>
+                <![CDATA[
+                   // 
+                   java.util.Date fechaHOY = new Date();  
+                ]]>
+            </zscript>  
+            <label id="" value="ADempiere Modulo" sclass="titulo1"/>
+            <label value="${fechaHOY}"  sclass="subTitulo1"/>  <!--  style="color: white;font-size: 14px ;font-weight: bold;"/>  -->  
+            <datebox id="db4" cols="12" format="long+medium" onCreate="self.value = new Date()" width="" visible="false" />
+            <space/>
+        </vbox>
+    </hbox>
+    <separator bar="true" style="color: black;" />
+    <hbox width="100%" height="16%" pack="center" align="center" style="background: cyan; border-style: none; border-width: 1px">
+        <vbox align="center" >
+            <space/>
+            <label id="" value="BIENVENIDO" sclass="titulo2" />
+            <space/>
+        </vbox>
+    </hbox>
+    <separator bar="true" style="color: black;" />
+</zk>

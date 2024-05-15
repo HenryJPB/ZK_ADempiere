@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NotaEntrega" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c38dfde8-a568-4bde-bf90-d14a51e11ca1">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[select m_inout.documentno as nro_despacho,
+	   m_inout.description as descripcion,
+	   m_inout.dateordered as fecha_orden,
+	   m_inout.dateprinted as fecha_entrega,
+	   c_bpartner.value as rif,
+	   c_bpartner.name as nombre,
+	   c_location.address1 as direccion1,
+	   c_location.address2 as direccion2,
+	   m_inout.salesrep_id as id_usuario,
+	   --ad_user.name as nombre_usuario,
+	   m_inoutline.m_product_id as id_producto,
+	   m_product.value as cod_producto,
+	   m_product.name as name_producto,
+	   m_inoutline.qtyentered as cantidad,
+	   m_product.weight as peso,
+	   ( m_product.weight * m_inoutline.qtyentered ) as peso_bruto
+from   m_inout, c_bpartner, c_bpartner_location, c_location, m_inoutline, m_product
+where  m_inout.ad_client_id = 1000000
+and    m_inout.ad_org_id  = 1000000
+and    c_bpartner.ad_client_id  = m_inout.ad_client_id
+and    c_bpartner.c_bpartner_id = m_inout.c_bpartner_id
+and    m_inout.documentno = 'EVNF-1' -- ****
+and    c_bpartner_location.c_bpartner_id = c_bpartner.c_bpartner_id
+and    c_bpartner_location.ad_client_id = m_inout.ad_client_id
+and    c_location.ad_client_id = m_inout.ad_client_id
+and    c_location.c_location_id = c_bpartner_location.c_location_id
+and    c_location.address2 is not null  -- Sujeto a revision!!!
+and    c_bpartner_location.c_bpartner_id = c_bpartner.c_bpartner_id
+and    m_inoutline.ad_client_id = m_inout.ad_client_id
+and    m_inoutline.m_inout_id = m_inout.m_inout_id
+and    m_product.ad_client_id  = m_inout.ad_client_id
+and    m_product.m_product_id = m_inoutline.m_product_id]]>
+	</queryString>
+	<field name="nro_despacho" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="fecha_orden" class="java.sql.Timestamp"/>
+	<field name="fecha_entrega" class="java.sql.Timestamp"/>
+	<field name="rif" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="direccion1" class="java.lang.String"/>
+	<field name="direccion2" class="java.lang.String"/>
+	<field name="id_usuario" class="java.math.BigDecimal"/>
+	<field name="id_producto" class="java.math.BigDecimal"/>
+	<field name="cod_producto" class="java.lang.String"/>
+	<field name="name_producto" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="peso" class="java.math.BigDecimal"/>
+	<field name="peso_bruto" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="53" splitType="Stretch">
+			<staticText>
+				<reportElement x="11" y="14" width="262" height="20" uuid="56362bab-370e-4695-98fb-cc0329afc6d5"/>
+				<textElement>
+					<font fontName="Serif" isBold="true" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[DERIVADOS SIDERURGICOS,C.A.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="314" y="14" width="100" height="20" uuid="092fd23c-2834-47dc-b60f-d55f1196cd7f"/>
+				<textElement>
+					<font fontName="Serif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rif}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<textField>
+				<reportElement x="11" y="11" width="100" height="20" uuid="65e2eccf-f1fd-4b07-a219-9b97b20bb316"/>
+				<textFieldExpression><![CDATA[$F{nro_despacho}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="153" y="11" width="100" height="20" uuid="d100e560-0640-496b-8bf7-9f9d00681ca1"/>
+				<textFieldExpression><![CDATA[$F{fecha_orden}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="381" y="11" width="100" height="20" uuid="d5ab7117-9feb-4164-b0df-922d9e65040f"/>
+				<textFieldExpression><![CDATA[$F{fecha_entrega}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="41" width="100" height="20" uuid="6bbca0ac-d76c-4eb6-b7b9-8f39430c6c64"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Id_producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="124" y="41" width="190" height="20" uuid="2deac010-b5cd-4471-b46f-f2e94fd78def"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="11" y="0" width="100" height="20" uuid="f2832c12-a764-48bc-9396-23beed49b397"/>
+				<textFieldExpression><![CDATA[$F{id_producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="124" y="0" width="190" height="20" uuid="f25f2cbf-4d60-4aac-af40-7985224dfbf6"/>
+				<textFieldExpression><![CDATA[$F{name_producto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

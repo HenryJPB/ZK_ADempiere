@@ -1,0 +1,106 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    
+    <style src="/css/EstiloHP.css"/>
+    <style dynamic="true">
+        .myT1 {
+        //border: 20px solid red;
+        	font-size:16px;
+        	font-weight:bold;
+        }
+        /* Esto NO esta funcionando ???? */ 
+	   .mymenubar.z-menubar-hor,.mymenubar .z-menu-body-seld .z-menu-inner-m  .z-menu-btn
+    	{
+    		background-image: none;
+    		position: relative;
+    		background: transparent repeat-x 0 0;
+		}
+		/* Change Font Color for Menu which has children and which does not have children */
+		.mymenubar .z-menu-inner-m .z-menu-btn,.mymenubar .z-menuitem-inner-m .z-menuitem-btn
+    	{
+    		color: white;
+    		font-weight: bold;
+		}
+    </style>
+    <!--  
+    <separator/>
+    
+    <separator bar="true"/>
+    -->
+    <include src="/VISTA_ACCESORIOS/encabezado.zul" />
+    <toolbar id="tb" align="end" style="background-color: lightblue;" >
+             <menubar style="background-color: lightblue;" sclass="mymenubar" >
+                  	<menu label="Help">
+	                      <menupopup style="background-color: lightblue;"  >
+	                           <menuitem label="Index"/>
+	                           <menu label="About">
+	                             <menupopup style="background-color: lightblue;" >
+	                                <menuitem label="Acerca ADempiere"/>
+	                                <menuitem label="Acerca ADempiere vDESICA"/>
+	                             </menupopup>
+	                           </menu>
+                                   <menuitem label="PRUEBA.1" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspRepPRUEBA1.jsp&quot;);" />
+                                   <menuitem label="PRUEBA.2" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspRepPRUEBA2.jsp&quot;);" />
+	                     </menupopup>
+	              	</menu>
+	               	<menu label="INFORMES" style="font-weight: bold;" >
+                            <menupopup style="background-color: lightblue;" > 
+                                <menu label="Gestion de materiales">
+                                    <menupopup style="background-color: lightblue;" >
+                                       <menuitem label="Catalogo Productos" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspRepProductosAD.jsp&quot;);" />
+                                       <menuitem label="Detalle de Productos" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspRepProductosADv3.jsp&quot;);" />
+                                    </menupopup>     
+	                        </menu>
+                                <menu label="Gestion de ventas">
+                                    <menupopup style="background-color: lightblue;" >
+                                       <menuitem label="Socio de Negocio (Clientes)" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspRepSocioNegocioADcliente.jsp&quot;);" />
+                                       <menuitem label="Cotizacion/Nota pedido" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspParamNotaPedidoADv4.jsp&quot;);" />
+                                       <menuitem label="Nota entrega" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspParamNotaEntregaAD.jsp&quot;);" />
+                                       <menuitem label="Resumen Ventas (periodo)" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspParamPedidosVenta_fecha.jsp&quot;);" />
+                                       <!--
+                                       <menuitem label="Nota entrega(Prueba)" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspRepNotaEntregaAD.jsp&quot;);" />
+                                       -->
+                                    </menupopup>         
+	                        </menu>
+                            </menupopup>
+	               	</menu>
+	            	<menu label="CONSULTAS" style="font-weight: bold;" >
+	                     <menupopup style="background-color: lightblue;">
+                                 <!-- 
+                                 <menuitem label="Lista Clientes" image="/IMG/EditRegistro32px.png" onClick="Executions.sendRedirect(&quot;../LISTA_CLIENTES_ERP/listaClientes.zul&quot;)" />
+                                 -->
+                                 <menuitem label="Lista Clientes" image="/IMG/Hoja-de-calculo.png" />                    
+	                         <menuitem label="Lista Proveedores" image="/IMG/Hoja-de-calculo.png" />
+	                     </menupopup>
+	               	</menu>
+	               	<menuitem label="ACTUALIZAR" disabled="true" />
+	              	<menuitem label="SALIR" onClick="Executions.sendRedirect(&quot;../index.zul&quot;);" />
+            </menubar>
+            <!--   
+            <toolbarbutton label="INFORMES" style="font-weight: bold;" >
+               <attribute name="onClick">
+                    <![CDATA[
+	                	alert("Informes");  
+	               	]]>
+	           </attribute>
+            </toolbarbutton>
+            <toolbarbutton label="CONSULTAS" onClick='alert("Consultas")'  style="font-weight: bold;" />
+            <toolbarbutton label="ACTUALIZAR" onClick='alert("Actualizar")' style="font-weight: bold;"/>
+            <toolbarbutton label="SALIR" style="font-weight: bold;" onClick="Executions.sendRedirect(&quot;../index.zul&quot;);"  />
+            -->
+   </toolbar>
+   <separator bar="true"/>
+   <vbox align="center" width="100%" height="63%" >
+        <space/>
+        <space/>
+        <space/>
+        <space/>
+        <space/>
+        <space/>
+        <space/>
+	<image src="/IMG/ADempiere-logo.png" width="80%" height="50%" />
+        <space/>
+    </vbox> 
+   <separator bar="true"/>
+   <include src="/VISTA_ACCESORIOS/pie-pag.zul" /> 
+</zk>
