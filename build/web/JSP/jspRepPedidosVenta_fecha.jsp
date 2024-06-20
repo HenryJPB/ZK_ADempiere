@@ -24,8 +24,8 @@
     <body>
         
         <%
-            String reporte = "PedidosVenta_fecha.jasper";  
-            
+            //String reporte = "PedidosVenta_fecha.jasper";  
+            String reporte = "PedidosVenta_fecha_vJSS-6.11.jasper";  
             /* Parametros para realizar la conexion */
             Connection conexion;
             /* 

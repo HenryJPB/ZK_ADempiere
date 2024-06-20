@@ -27,7 +27,8 @@
     <body>
         
         <%
-            String reporte = "Reporte02.jasper";  
+            String reporte = "NotaPedido(v3-JSS6.21).jasper"; 
+            //String reporte = "Reporte02.jasper";  
             /* Parametros para realizar la conexion */
             Connection conexion;
             /* 
@@ -48,9 +49,13 @@
             /* No enviamos parametros porque nuetro reporte NO lo requiere */
             Map parametros = new HashMap();
             //parametros.put("nombreParametro", "valorParametro");
+            Integer i = 1000004; 
+            parametros.put("p_org_id", i ); 
+            String nroNota = "PVNF-95";  
             //String nroNota = request.getParameter("nro_ov");   
-            //parametros.put( "p_orden_nro",nroNota );
+            parametros.put( "p_orden_nro",nroNota );
             //parametros.put( "p_vendedor",request.getParameter("s_vendedor") );
+            parametros.put( "p_vendedor", "Luis The Campions" );
             /*-*/
             //Integer i = Integer.valueOf( request.getParameter("s_organizacion" ).substring(0, 7) );   
             // Integer i = Integer.valueOf( "1000000" );   

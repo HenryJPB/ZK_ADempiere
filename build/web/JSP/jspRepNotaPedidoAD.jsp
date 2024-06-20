@@ -23,7 +23,10 @@
     <body>
         
         <%
-            String reporteNotaPedido = "NotaPedido(v2).jasper";  
+            //String reporteNotaPedido = "NotaPedido(v3-JSS6.11).jasper";  
+            String reporteNotaPedido = "NotaPedido(v3).jasper";  
+            //String reporteNotaPedido = "NotaPedido(v2-JSS6.11).jasper";  
+            //String reporteNotaPedido = "NotaPedido(v3-JSS6.11).jasper";  
             String reporteCotizacion = "CotizacionVenta.jasper";  
             /* Parametros para realizar la conexion */
             Connection conexion;
@@ -63,17 +66,22 @@
             // System.out.println("*****Organizacion");   revisar *No* funciona!!! 
             out.println("*****Organizacion"+request.getParameter("s_organizacion") );  // No genera errores pero no produce salida ?????????????????????????? 
             /* Enviamos el reporte ( ruta ), los parametrios y la conexion */
-            byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, conexion);
-            /* Indicamos que la respuesta va a ser en PDF */
-            response.setContentType("application/pdf");
-            // response.setHeader( "Content-Disposition", "attachment; filename="+ nroNota + ".pdf" );  // Eeexitooooo 👍 !!!!
-            response.setContentLength(bytes.length);
-            ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.write(bytes, 0, bytes.length);
-            /*-*/    
-            /* Limpiamos y cerramos los flujos de salida */
-            outputStream.flush();
-            outputStream.close();
+            try {
+                byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, conexion);
+                if ( bytes != null && bytes.length > 0 ) { 
+                    /* Indicamos que la respuesta va a ser en PDF */
+                    response.setContentType("application/pdf");
+                    // response.setHeader( "Content-Disposition", "attachment; filename="+ nroNota + ".pdf" );  // Eeexitooooo 👍 !!!!
+                    response.setContentLength(bytes.length);
+                    ServletOutputStream outputStream = response.getOutputStream();
+                    outputStream.write(bytes, 0, bytes.length);
+                    /* Limpiamos y cerramos los flujos de salida */
+                    outputStream.flush();
+                    outputStream.close();
+              } // if,... 
+            } catch (JRException e) {
+               e.printStackTrace();
+            }
             conexion.close();
         %> 
        

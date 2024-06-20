@@ -34,7 +34,7 @@
             //*  
             /*-*/
             /* Establecemos la ruta del reporte */
-            File reportFile = new File( application.getRealPath("/REPORTES/Productos(v3).jasper") );
+            File reportFile = new File( application.getRealPath("/REPORTES/Productos(v3-JSS6.11).jasper") );
             /*-*/
             /* No enviamos parametros porque nuetro reporte NO lo requiere */
             Map parametros = new HashMap();

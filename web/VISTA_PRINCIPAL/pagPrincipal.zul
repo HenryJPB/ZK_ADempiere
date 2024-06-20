@@ -53,7 +53,8 @@
 	                        </menu>
                                 <menu label="Gestion de ventas">
                                     <menupopup style="background-color: lightblue;" >
-                                       <menuitem label="Socio de Negocio (Clientes)" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspRepSocioNegocioADcliente.jsp&quot;);" />
+                                       <menuitem label="Socio de Negocio" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspRepSociosNegocio.jsp&quot;);" />
+                                       <menuitem label="Socio de Negocio (V2)" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspParamSociosNegocioV2.jsp&quot;);" />
                                        <menuitem label="Cotizacion/Nota pedido" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspParamNotaPedidoADv4.jsp&quot;);" />
                                        <menuitem label="Nota entrega" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspParamNotaEntregaAD.jsp&quot;);" />
                                        <menuitem label="Resumen Ventas (periodo)" image="/IMG/Presentacion.png" onClick="Executions.sendRedirect(&quot;../JSP/jspParamPedidosVenta_fecha.jsp&quot;);" />

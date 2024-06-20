@@ -28,7 +28,7 @@
     <body>
         
         <%
-            String reporte = "Reporte03.jasper";  
+            String reporte = "NotaPedido(v3-JSS6.11).jasper";  
             /* Parametros para realizar la conexion */
             Connection conexion;
             /* 
@@ -47,11 +47,15 @@
             File reportFile = new File( application.getRealPath("/REPORTES/"+reporte ) );
             /*-*/
             /* No enviamos parametros porque nuetro reporte NO lo requiere */
+              
             Map parametros = new HashMap();
+            Integer i = 1000004; 
+            parametros.put("p_org_id", i );
             //parametros.put("nombreParametro", "valorParametro");
-            //String nroNota = request.getParameter("nro_ov");   
-            //parametros.put( "p_orden_nro",nroNota );
+            String nroNota = "PVNF-95"; 
+            parametros.put( "p_orden_nro",nroNota );
             //parametros.put( "p_vendedor",request.getParameter("s_vendedor") );
+            parametros.put( "p_vendedor","version JSS6.11" );
             /*-*/
             //Integer i = Integer.valueOf( request.getParameter("s_organizacion" ).substring(0, 7) );   
             // Integer i = Integer.valueOf( "1000000" );   

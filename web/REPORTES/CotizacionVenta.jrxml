@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.21.2.final using JasperReports Library version 6.21.2-8434a0bd7c3bbc37cbf916f2968d35e4b165821a  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NotaPedido(v)2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e61f66b8-7a76-4347-969f-1e1448397fdc">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CotizacionVentas" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e61f66b8-7a76-4347-969f-1e1448397fdc">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="22"/>
 	<property name="ireport.y" value="0"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ADempiere(Produccion)"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -12,8 +10,8 @@
 	<parameter name="p_client_id" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1000000]]></defaultValueExpression>
 	</parameter>
-	<parameter name="p_org_id" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1000004]]></defaultValueExpression>
+	<parameter name="p_org_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1000000]]></defaultValueExpression>
 	</parameter>
 	<parameter name="p_orden_nro" class="java.lang.String">
 		<defaultValueExpression><![CDATA[PVNF-3]]></defaultValueExpression>
@@ -36,23 +34,20 @@
              c_location.c_country_id as id_pais,
 	   c_order.salesrep_id as id_usuario,
 	   ( select ad_user.name
-	     from   ad_user, c_bpartner
+	     from   ad_user
 	     where  ad_user.ad_client_id = c_order.ad_client_id
-	     and    c_order.c_bpartner_id = c_bpartner.c_bpartner_id
-	     and    c_bpartner.ad_client_id = c_order.ad_client_id
-	     and    c_bpartner.c_bpartner_id = ad_user.c_bpartner_id ) as nombre_contacto,
+	     and    c_order.ad_user_id = ad_user.ad_user_id
+               and    ad_user.isactive = 'Y' ) as nombre_contacto,
 	     ( select ad_user.phone
-	     from   ad_user, c_bpartner
+	     from   ad_user
 	     where  ad_user.ad_client_id = c_order.ad_client_id
-	     and    c_order.c_bpartner_id = c_bpartner.c_bpartner_id
-	     and    c_bpartner.ad_client_id = c_order.ad_client_id
-	     and    c_bpartner.c_bpartner_id = ad_user.c_bpartner_id ) as telf_contacto,
+	     and    c_order.ad_user_id = ad_user.ad_user_id
+               and    ad_user.isactive = 'Y' ) as telf_contacto,
 	     ( select ad_user.phone2
-	     from   ad_user, c_bpartner
+	     from   ad_user
 	     where  ad_user.ad_client_id = c_order.ad_client_id
-	     and    c_order.c_bpartner_id = c_bpartner.c_bpartner_id
-	     and    c_bpartner.ad_client_id = c_order.ad_client_id
-	     and    c_bpartner.c_bpartner_id = ad_user.c_bpartner_id ) as cel_contacto,
+	     and    c_order.ad_user_id = ad_user.ad_user_id
+               and    ad_user.isactive = 'Y'  ) as cel_contacto,
 	   ad_user.name as nombre_usuario,
 	   c_orderline.m_product_id as id_producto,
 	   m_product.value as cod_producto,
@@ -217,7 +212,7 @@ order  by c_orderline.line]]>
 	<columnHeader>
 		<band height="195" splitType="Stretch">
 			<staticText>
-				<reportElement style="SubTitle" x="138" y="0" width="240" height="25" uuid="6f06a1a0-38b5-484e-8073-d7a219d3dda4"/>
+				<reportElement style="SubTitle" x="142" y="0" width="235" height="25" uuid="6f06a1a0-38b5-484e-8073-d7a219d3dda4"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
